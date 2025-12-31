@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(docker --version:*)",
+      "Bash(docker-compose:*)",
+      "Bash(sudo apt-get:*)",
+      "Bash(ss:*)",
+      "Bash(tree:*)",
+      "Bash(docker compose:*)",
+      "Bash(npm install)",
+      "Bash(npx prisma generate:*)",
+      "Bash(curl:*)"
+    ]
+  }
+}

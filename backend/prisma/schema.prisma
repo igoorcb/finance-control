@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id             String        @id @default(uuid())
+  name           String
+  type           String        // corrente, poupanca, investimento, carteira
+  bank           String?
+  initialBalance Float
+  currentBalance Float
+  color          String        @default("#3B82F6")
+  icon           String        @default("wallet")
+  isActive       Boolean       @default(true)
+  transactions   Transaction[]
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}
+
+model Category {
+  id           String        @id @default(uuid())
+  name         String
+  type         String        // receita, despesa
+  icon         String        @default("tag")
+  color        String        @default("#10B981")
+  isActive     Boolean       @default(true)
+  transactions Transaction[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Transaction {
+  id          String   @id @default(uuid())
+  type        String   // receita, despesa, transferencia
+  amount      Float
+  date        DateTime
+  description String
+  categoryId  String
+  category    Category @relation(fields: [categoryId], references: [id])
+  accountId   String
+  account     Account  @relation(fields: [accountId], references: [id])
+  status      String   @default("confirmada") // pendente, confirmada
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

@@ -1,0 +1,17 @@
+{
+  "name": "finance-app",
+  "version": "1.0.0",
+  "description": "Sistema de Controle Financeiro Pessoal - Self-hosted",
+  "scripts": {
+    "dev": "docker compose up",
+    "dev:build": "docker compose up --build",
+    "down": "docker compose down",
+    "logs": "docker compose logs -f",
+    "logs:backend": "docker compose logs -f backend",
+    "logs:frontend": "docker compose logs -f frontend",
+    "clean": "docker compose down -v && rm -rf database/*.db"
+  },
+  "keywords": ["finance", "personal-finance", "self-hosted"],
+  "author": "",
+  "license": "MIT"
+}

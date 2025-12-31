@@ -1,0 +1,44 @@
+services:
+  backend:
+    build: ./backend
+    container_name: finance-app-backend
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+      - ./database:/app/database
+    environment:
+      - DATABASE_URL=file:/app/database/finance.db
+      - PORT=3001
+      - NODE_ENV=development
+    command: sh -c "npx prisma migrate dev --name init && npx prisma db seed && npm run dev"
+    networks:
+      - finance-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3001/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  frontend:
+    build: ./frontend
+    container_name: finance-app-frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - VITE_API_URL=http://localhost:3001/api
+    depends_on:
+      - backend
+    networks:
+      - finance-network
+
+networks:
+  finance-network:
+    driver: bridge
+
+volumes:
+  database-data:
